@@ -1029,7 +1029,17 @@ cd /d "D:\myproject_package"
 conda-pack 可以将整个 Python 环境连同二进制依赖完整打成压缩包。注意：外网打包机的操作系统和 CPU 架构必须与内网目标服务器完全一致（例如：均未 Linux x86_64）。
 1. 在外网电脑上打包环境在激活的目标环境终端下，执行打包命令：
 # 将名为 duckdb_env 的环境打包为 duckdb_env.tar.gz
-conda pack -n duckdb_env -o duckdb_env.tar.gz
+进去先安装
+conda activate duckdb-python-demo
+pip list   # 或 conda list,确认 duckdb 等依赖都在里面
+然后退出虚拟环境
+conda deactivate
+确认没问题后再回到 base 执行打包命令
+确认你在 base 环境下安装。一定要先确认提示符是 (base),再执行安装:
+conda activate base
+conda install -c conda-forge conda-pack（前面安装了可以跳过）
+测试：conda-pack --help
+开始打包：conda-pack -n duckdb-python-demo -o duckdb-python-demo.tar.gz
 2. 将文件传输至内网使用 U 盘、光盘或安全网闸，将以下文件复制到内网离线服务器：
 duckdb_env.tar.gz（环境压缩包）
 analysis.py（分析脚本）
