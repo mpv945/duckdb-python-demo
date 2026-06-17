@@ -949,6 +949,7 @@ proxy_servers:
 conda config --set proxy_servers.http http://127.0.0.1:7890
 conda config --set proxy_servers.https http://127.0.0.1:7890
 conda install -c conda-forge conda-pack -y
+更新： conda update -n base -c conda-forge conda
 下载完删除：conda config --remove-key proxy_servers
 
 ## 2. 安装 uv
