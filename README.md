@@ -17,6 +17,20 @@
 ### scipy statsmodels 统计分析
 ### streamlit dash [BI报表/Dashboard【dash】]
 
+### 将名为 duckdb-python-demo 的环境打包为 duckdb-python-demo.tar.gz
+``` bash
+进去先安装
+conda activate duckdb-python-demo
+pip list   # 或 conda list,确认 duckdb 等依赖都在里面
+然后退出虚拟环境
+conda deactivate
+确认没问题后再回到 base 执行打包命令
+确认你在 base 环境下安装。一定要先确认提示符是 (base),再执行安装:
+conda activate base
+conda install -c conda-forge conda-pack（前面安装了可以跳过）
+测试：conda-pack --help
+开始打包：conda-pack -n duckdb-python-demo -o D:\soft\duckdb-python-demo.tar.gz
+```
 
 如果你需要在 **Windows、macOS、Linux** 上统一管理 Python 环境，推荐直接使用 **Miniconda**（轻量）或者 **Anaconda**（自带大量科学计算库）。
 
