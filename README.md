@@ -1,6 +1,7 @@
 ## 常用库安装
 ### conda create -n duckdb-python-demo python=3.14 -y
 ### conda activate duckdb-python-demo 【退出 conda deactivate】
+
 ### conda install -c conda-forge duckdb 
 ### pandas pyarrow numpy Polars 数据分析核心库
 
