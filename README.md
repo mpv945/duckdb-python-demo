@@ -1,3 +1,37 @@
+## 常用库安装
+### conda create -n duckdb-python-demo python=3.14 -y
+### conda activate duckdb-python-demo 【退出 conda deactivate】
+
+### conda install -c conda-forge duckdb 
+### pandas pyarrow numpy Polars 数据分析核心库
+
+### matplotlib plotly pyecharts 图表库
+### openpyxl xlsxwriter  [ Excel报表,xlsxwriter生成复杂报表更强。]
+### reportlab  PDF报表
+
+### requests HTTP 请求爬虫（最常见）登录态处理: session = requests.Session()  session.post(login_url)  session.get(data_url)
+### beautifulsoup4 lxml   HTML 解析
+### Playwright playwright-stealth Selenium 【UI页面自动化】
+### fastapi uvicorn jinja2 【传统web项目】
+
+### scipy statsmodels 统计分析
+### streamlit dash [BI报表/Dashboard【dash】]
+
+### 将名为 duckdb-python-demo 的环境打包为 duckdb-python-demo.tar.gz
+``` bash
+进去先安装
+conda activate duckdb-python-demo
+pip list   # 或 conda list,确认 duckdb 等依赖都在里面
+然后退出虚拟环境
+conda deactivate
+确认没问题后再回到 base 执行打包命令
+确认你在 base 环境下安装。一定要先确认提示符是 (base),再执行安装:
+conda activate base
+conda install -c conda-forge conda-pack（前面安装了可以跳过）
+测试：conda-pack --help
+开始打包：conda-pack -n duckdb-python-demo -o D:\soft\duckdb-python-demo.tar.gz
+```
+
 如果你需要在 **Windows、macOS、Linux** 上统一管理 Python 环境，推荐直接使用 **Miniconda**（轻量）或者 **Anaconda**（自带大量科学计算库）。
 
 ## 一、安装 Conda
