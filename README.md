@@ -1,15 +1,16 @@
-conda create -n duckdb-python-demo python=3.14 -y
-conda activate duckdb-python-demo 【退出 conda deactivate】
-conda install -c conda-forge duckdb 
-pandas pyarrow numpy Polars 数据分析核心库
-scipy statsmodels 统计分析
-matplotlib plotly pyecharts 图表库
-openpyxl xlsxwriter  [ Excel报表,xlsxwriter生成复杂报表更强。]
-reportlab  PDF报表
-streamlit dash [BI报表/Dashboard【dash】]
-requests HTTP 请求爬虫（最常见）登录态处理: session = requests.Session()  session.post(login_url)  session.get(data_url)
-beautifulsoup4 lxml   HTML 解析
-Playwright playwright-stealth Selenium 【UI页面自动化】
+## 常用库安装
+### conda create -n duckdb-python-demo python=3.14 -y
+### conda activate duckdb-python-demo 【退出 conda deactivate】
+### conda install -c conda-forge duckdb 
+### pandas pyarrow numpy Polars 数据分析核心库
+### scipy statsmodels 统计分析
+### matplotlib plotly pyecharts 图表库
+### openpyxl xlsxwriter  [ Excel报表,xlsxwriter生成复杂报表更强。]
+### reportlab  PDF报表
+### streamlit dash [BI报表/Dashboard【dash】]
+### requests HTTP 请求爬虫（最常见）登录态处理: session = requests.Session()  session.post(login_url)  session.get(data_url)
+### beautifulsoup4 lxml   HTML 解析
+### Playwright playwright-stealth Selenium 【UI页面自动化】
 
 
 如果你需要在 **Windows、macOS、Linux** 上统一管理 Python 环境，推荐直接使用 **Miniconda**（轻量）或者 **Anaconda**（自带大量科学计算库）。
