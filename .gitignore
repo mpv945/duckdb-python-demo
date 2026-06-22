@@ -1,0 +1,39 @@
+
+mydata.db
+output/data
+input/data
+
+# Python 字节码
+__pycache__/
+*.py[cod]
+*$py.class
+
+# 虚拟环境
+venv/
+.env/
+.venv/
+env/
+
+# IDE
+.idea/
+.vscode/
+
+# 日志
+*.log
+
+# 测试覆盖率
+.coverage
+htmlcov/
+.pytest_cache/
+
+# 打包产物
+build/
+dist/
+*.egg-info/
+
+# Jupyter
+.ipynb_checkpoints/
+
+# 系统文件
+.DS_Store
+Thumbs.db
