@@ -110,9 +110,12 @@ conda --version
 
 ---
 
-### Linux
+### Linux : 系统要求：https://www.anaconda.com/docs/getting-started/miniconda/system-requirements
+
 
 ```bash
+查看系统GLIBC版本： getconf GNU_LIBC_VERSION 或者 ldd --version
+Miniconda3-py311_23.10.0-1（2023年10月发布）是社区里被验证过、在 glibc 2.17（CentOS 7）环境下能正常安装运行的较新版本。从那之后的版本（py312_24.9.x 及更新）开始出现 glibc 2.27/2.28 依赖问题。
 wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh
 
 bash Miniconda3-latest-Linux-x86_64.sh
