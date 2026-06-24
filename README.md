@@ -1,4 +1,57 @@
 ```bash
+查看Linux系统的GLIBC版本
+ldd --version 或者 getconf GNU_LIBC_VERSION
+如果是 2.17（典型如 CentOS 7），新版 Miniconda（要求 >=2.28）装不上，得用旧版（比如 Miniconda3-py311_23.10.0-1 或更早）。
+如果是 2.28 及以上（比如 RHEL/Rocky/AlmaLinux 8+、Ubuntu 20.04+），最新版 Miniconda 可以直接装。
+如果你确实需要 defaults（pkgs/main，比如装 anaconda 元包）
+cat > ~/.condarc << 'EOF'
+channels:
+  - defaults
+show_channel_urls: true
+default_channels:
+  - https://mirrors.tuna.tsinghua.edu.cn/anaconda/pkgs/main
+  - https://mirrors.tuna.tsinghua.edu.cn/anaconda/pkgs/r
+  - https://mirrors.tuna.tsinghua.edu.cn/anaconda/pkgs/msys2
+custom_channels:
+  conda-forge: https://mirrors.tuna.tsinghua.edu.cn/anaconda/cloud
+EOF
+
+两个版本共存
+sudo ln -sf /usr/local/bin/python3.12 /usr/local/bin/python3
+sudo ln -sf /usr/local/bin/pip3.12 /usr/local/bin/pip3
+验证两个版本共存
+python --version      # 应该还是 Python 2.x（系统原来的）
+python3 --version     # 新装的 Python 3.x
+which python
+which python3
+
+创建一个独立的 Python 环境（DuckDB 官方要求 Python 3.9+，此处推荐使用 3.10，如果GLIBC位2.17,只能指定3.11）：
+创建干净环境并安装依赖 conda search python --full-name[查看远程版本】
+conda create -n duckdb-python-demo python=3.14 -y
+conda activate duckdb-python-demo 【退出 conda deactivate】
+
+# 打包环境
+conda activate duckdb-python-demo
+pip list   # 或 conda list,确认 duckdb 等依赖都在里面
+然后退出虚拟环境
+conda deactivate
+确认没问题后再回到 base 执行打包命令
+确认你在 base 环境下安装。一定要先确认提示符是 (base),再执行安装:
+conda activate base
+conda install -c conda-forge conda-pack（前面安装了可以跳过）
+测试：conda-pack --help
+开始打包：conda-pack -n duckdb-python-demo -o duckdb-python-demo.tar.gz
+
+移动到内网环境（可以手动，用duckdb-python-demo全路径进行运行python）
+tar -xzf duckdb-python-demo.tar.gz -C ~/miniconda3/envs/duckdb-python-demo
+source ~/miniconda3/envs/duckdb-python-demo/bin/activate
+conda-unpack
+conda deactivate
+
+# 之后就能用标准方式激活
+conda activate duckdb-python-demo
+
+
 git -c http.proxy=socks5://127.0.0.1:7897 -c https.proxy=socks5://127.0.0.1:7897 pull
 
 git add .
