@@ -1093,6 +1093,9 @@ source my_offline_env/bin/activate
 4. 运行分析环境激活后，直接在内网运行您的 DuckDB 分析脚本：
 python analysis.py
 
+# 如果本地无法安装conda
+解压duckdb-python-demo.tar.gz得到解压目录，目录有python命令库，直接全局路径运行python相关操作
+
 
 
 
