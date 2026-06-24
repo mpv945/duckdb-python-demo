@@ -996,6 +996,57 @@ conda install -c conda-forge conda-pack -y
 更新： conda update -n base -c conda-forge conda
 下载完删除：conda config --remove-key proxy_servers
 
+
+
+（pkgs/main 403），最常见的是第一种——配置混乱导致的，而不是真的被封号。解决步骤：
+第一步：清空 channel 配置，恢复默认状态
+conda config --remove-key channels
+conda config --remove-key default_channels
+如果报错说 key 不存在，没关系，说明本来就没设置过，跳过即可。
+第二步：清理索引缓存，强制重新同步
+conda clean --index-cache
+第三步：直接绕开 defaults 频道，只用 conda-forge
+最简单粗暴但很有效的办法——你装 conda-pack 本来就只需要 conda-forge，不需要 defaults。可以用 --override-channels 让这次安装完全不碰 pkgs/main：
+conda install -c conda-forge --override-channels conda-pack -y
+
+关于 defaults 频道（pkgs/main）： 不少镜像站（比如中科大 USTC）现在已经不再镜像官方的 defaults 仓库，
+只镜像 conda-forge / bioconda 等社区频道，原因是合规性问题。这跟你之前遇到的 403 是同一类问题的延伸——官方源本身访问受限，
+国内一些镜像站也跟着停掉了对它的同步。所以现在比较推荐的做法是彻底抛弃 defaults，只用 conda-forge。
+推荐配置（清华源，最常用）
+直接编辑或创建 ~/.condarc：
+cat > ~/.condarc << 'EOF'
+channels:
+  - conda-forge
+  - nodefaults
+custom_channels:
+  conda-forge: https://mirrors.tuna.tsinghua.edu.cn/anaconda/cloud
+show_channel_urls: true
+EOF
+然后清缓存：conda clean -i
+之后正常装包，完全不会再碰官方的 repo.anaconda.com：conda install -c conda-forge conda-pack -y
+
+备选：中科大 USTC 镜像
+cat > ~/.condarc << 'EOF'
+channels:
+  - nodefaults
+custom_channels:
+  conda-forge: https://mirrors.ustc.edu.cn/anaconda/cloud
+show_channel_urls: true
+EOF
+如果你确实需要 defaults（pkgs/main，比如装 anaconda 元包）
+这种情况清华源仍然提供镜像，可以用：
+cat > ~/.condarc << 'EOF'
+channels:
+  - defaults
+show_channel_urls: true
+default_channels:
+  - https://mirrors.tuna.tsinghua.edu.cn/anaconda/pkgs/main
+  - https://mirrors.tuna.tsinghua.edu.cn/anaconda/pkgs/r
+  - https://mirrors.tuna.tsinghua.edu.cn/anaconda/pkgs/msys2
+custom_channels:
+  conda-forge: https://mirrors.tuna.tsinghua.edu.cn/anaconda/cloud
+EOF
+
 ## 2. 安装 uv
 uv 是由 Astral 开发的极速 Python 包管理工具，支持跨平台一键安装：
 ## Windows (PowerShell)
