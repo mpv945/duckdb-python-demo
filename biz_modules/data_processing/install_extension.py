@@ -74,7 +74,7 @@ def install_or_load_extension(con, ext_name: str):
     try:
 
         # rows = con.execute("""
-        #                    SELECT *
+        #                    SELECT extension_name, extension_version, installed_from, install_mode, aliases, installed
         #                    FROM duckdb_extensions()
         #                    """).fetchall()
         #
@@ -113,13 +113,13 @@ def install_or_load_extension(con, ext_name: str):
         print(f"❌ {ext_name} 处理失败: {e}")
         raise
 
-
+# WHERE list_contains(aliases, ?)
 def extension_installed(con, alias):
     row = con.execute("""
         SELECT installed
         FROM duckdb_extensions()
-        WHERE list_contains(aliases, ?)
-    """, [alias]).fetchone()
+        WHERE (extension_name = ? OR list_contains(aliases, ?)) AND installed = True
+    """, [alias,alias]).fetchone()
 
     #return row is not None and row[0]
     return row
