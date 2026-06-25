@@ -1,3 +1,5 @@
+from pathlib import Path
+
 import duckdb
 import os
 
@@ -59,14 +61,50 @@ class DuckdbExtensionLoad:
 # ==================== 扩展目录设置（打包后关键） ====================
 def setup_extension_directory(con):
     """把扩展目录设置到 Conda 环境内部（推荐用于 conda-pack）"""
+    print("当前工作目录:", os.getcwd())
+    print("脚本所在目录:", os.path.dirname(os.path.abspath(__file__)))
+    print("用户目录:", os.path.expanduser("~"))
+    home_dir = Path.home()
+    config_path = home_dir / "myapp" / "config.json"
+    print("新写法 用户目录:", config_path)
+
+    # 先判断，默认扩展目录是否安装过扩展
+    if extension_installed_check(con):
+        result = con.execute("SELECT current_setting('extension_directory')").fetchone()
+        # 当它是空的时候，DuckDB 在实际安装/加载扩展时，会动态计算一个默认路径，规则是：<用户目录>/.duckdb/extensions/<版本号>/<平台>/
+        # all_names = con.execute("SELECT name FROM duckdb_settings()").fetchall()
+        # for row in all_names:
+        #     print(row)
+
+        print(f"默认 至少安装过一个扩展，使用 '{result}' 作为扩展安装目录")
+        return
+    else:
+        print("没有安装任何扩展")
+
+    # 尝试使用用户目录来设置安装扩展目录
+    extension_home_dir = os.path.join(home_dir, "duckdb_extensions")
+    Path(extension_home_dir).mkdir(parents=True, exist_ok=True)
+    con.execute(f"SET extension_directory = '{extension_home_dir}';")
+    if extension_installed_check(con):
+        result = con.execute("""
+                             SELECT name, value, description
+                             FROM duckdb_settings()
+                             WHERE name = 'extension_directory'
+                             """).fetchone()
+        ret_name = result[0]
+        ret_value = result[1]
+        ret_description = result[2]
+        print(f"家目录 至少安装过一个扩展，使用 '{ret_name} : {ret_value}' 作为扩展安装目录")
+        return
+
     # env_prefix = os.environ.get("CONDA_PREFIX")
-    env_prefix = os.getcwd()
+    env_prefix = os.getcwd() # 当前工作目录
     # env_prefix = os.getenv("CONDA_PREFIX") or os.path.dirname(os.path.dirname(os.__file__))
     if env_prefix:
         extension_dir = os.path.join(env_prefix, "duckdb_extensions")
         os.makedirs(extension_dir, exist_ok=True)
         con.execute(f"SET extension_directory = '{extension_dir}';")
-        print(f"✅ 扩展目录已设置为: {extension_dir}")
+        print(f"✅ 扩展目录最终设置为: {extension_dir}")
     else:
         print("⚠️ 未检测到 CONDA_PREFIX，使用默认扩展目录")
 
@@ -123,3 +161,29 @@ def extension_installed(con, alias):
 
     #return row is not None and row[0]
     return row
+
+# fetchall() 返回全部
+def extension_installed_check(con):
+    # rows = con.execute("""
+    #                    SELECT extension_name, extension_version, installed_from, install_mode, aliases, installed
+    #                    FROM duckdb_extensions()
+    #                    """).fetchall()
+    #
+    # for row in rows:
+    #     print(row)
+
+    row = con.execute("""
+        SELECT installed
+        FROM duckdb_extensions()
+        WHERE installed = True AND install_mode not in ('STATICALLY_LINKED','NOT_INSTALLED')
+    """).fetchone()
+    print(row)
+    return row is not None # 这样函数直接返回 True/False，调用方用起来更直观：
+
+    #return row is not None and row[0]
+    return row
+
+# 判断目录不存在就创建，也可以：Path(path).mkdir(parents=True, exist_ok=True) 或者 os.makedirs(path, exist_ok=True)
+def ensure_dir(path):
+    if not os.path.exists(path):
+        os.makedirs(path)

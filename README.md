@@ -1,3 +1,5 @@
+https://duckdb.org.cn/
+
 ```bash
 查看Linux系统的GLIBC版本
 ldd --version 或者 getconf GNU_LIBC_VERSION
@@ -63,7 +65,7 @@ git -c http.proxy=http://127.0.0.1:7897 -c https.proxy=http://127.0.0.1:7897 pus
 ### conda activate duckdb-python-demo 【退出 conda deactivate】
 
 ### conda install -c conda-forge duckdb 
-### pandas pyarrow numpy Polars 数据分析核心库
+### pandas pyarrow numpy polars 数据分析核心库
 
 ### matplotlib plotly pyecharts 图表库
 ### openpyxl xlsxwriter  [ Excel报表,xlsxwriter生成复杂报表更强。]
