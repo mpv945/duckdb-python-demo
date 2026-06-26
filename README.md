@@ -1,4 +1,4 @@
-https://duckdb.org.cn/
+https://duckdb.org.cn/docs/stable/ 中文官网
 
 ```bash
 查看Linux系统的GLIBC版本
