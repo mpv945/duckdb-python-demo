@@ -61,6 +61,7 @@ git commit -m "first commit"
 git -c http.proxy=http://127.0.0.1:7897 -c https.proxy=http://127.0.0.1:7897 push origin main
 ```
 ## 常用库安装
+
 ### conda create -n duckdb-python-demo python=3.14 -y
 ### conda activate duckdb-python-demo 【退出 conda deactivate】
 
